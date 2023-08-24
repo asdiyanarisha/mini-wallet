@@ -1,8 +1,7 @@
 .idea
-main
 julo-test
 .env
 !.env.example
 gen/
 ./storage/error/*
-wallets.json
+./data/*

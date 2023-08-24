@@ -3,6 +3,7 @@ package wallet
 import (
 	"github.com/gin-gonic/gin"
 	"julo-test/internal/dto"
+	"julo-test/internal/model"
 	"julo-test/pkg/helper"
 	"net/http"
 )
@@ -15,6 +16,38 @@ func NewHandler() *handler {
 	return &handler{
 		service: NewService(),
 	}
+}
+
+func (h *handler) GetBalanceHandler(g *gin.Context) {
+	wallet, _ := g.Get("wallet")
+
+	response, err := h.service.GetBalanceWallet(wallet.(model.Wallet))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: err.Error()},
+		})
+		return
+	}
+
+	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: response})
+	return
+}
+
+func (h *handler) EnableWalletHandler(g *gin.Context) {
+	wallet, _ := g.Get("wallet")
+
+	response, err := h.service.EnableWallet(wallet.(model.Wallet))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: err.Error()},
+		})
+		return
+	}
+
+	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: response})
+	return
 }
 
 func (h *handler) InitializeHandler(g *gin.Context) {
