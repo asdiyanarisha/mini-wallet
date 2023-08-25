@@ -34,6 +34,29 @@ func (h *handler) GetBalanceHandler(g *gin.Context) {
 	return
 }
 
+func (h *handler) DisableWalletHandler(g *gin.Context) {
+	wallet, _ := g.Get("wallet")
+	var payload dto.DisableWallet
+	if err := g.ShouldBind(&payload); err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: helper.Validate(err)},
+		})
+		return
+	}
+
+	response, err := h.service.DisableWallet(wallet.(model.Wallet), payload)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: err.Error()},
+		})
+		return
+	}
+
+	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: response})
+}
+
 func (h *handler) EnableWalletHandler(g *gin.Context) {
 	wallet, _ := g.Get("wallet")
 

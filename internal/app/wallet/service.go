@@ -13,17 +13,18 @@ type service struct {
 
 type Service interface {
 	InitializeData(payload dto.InitializeWallet) (string, error)
-	EnableWallet(wallet model.Wallet) (dto.ResponseWalletEnabled, error)
-	GetBalanceWallet(wallet model.Wallet) (dto.ResponseWalletEnabled, error)
+	EnableWallet(wallet model.Wallet) (dto.ResponseWallet, error)
+	GetBalanceWallet(wallet model.Wallet) (dto.ResponseWallet, error)
+	DisableWallet(wallet model.Wallet, payload dto.DisableWallet) (dto.ResponseWallet, error)
 }
 
 func NewService() Service {
 	return &service{}
 }
 
-func (s *service) GetBalanceWallet(wallet model.Wallet) (dto.ResponseWalletEnabled, error) {
+func (s *service) GetBalanceWallet(wallet model.Wallet) (dto.ResponseWallet, error) {
 	if wallet.Status != "enabled" {
-		return dto.ResponseWalletEnabled{}, constants.WalletDisabledError
+		return dto.ResponseWallet{}, constants.WalletDisabledError
 	}
 
 	response := dto.ResponseDataEnable{
@@ -34,12 +35,37 @@ func (s *service) GetBalanceWallet(wallet model.Wallet) (dto.ResponseWalletEnabl
 		Balance:   wallet.Balance,
 	}
 
-	return dto.ResponseWalletEnabled{Wallet: response}, nil
+	return dto.ResponseWallet{Wallet: response}, nil
 }
 
-func (s *service) EnableWallet(wallet model.Wallet) (dto.ResponseWalletEnabled, error) {
+func (s *service) DisableWallet(wallet model.Wallet, payload dto.DisableWallet) (dto.ResponseWallet, error) {
+	if wallet.Status == "disabled" {
+		return dto.ResponseWallet{}, constants.WalletDisabledError
+	}
+
+	if payload.IsDisabled != true {
+		return dto.ResponseWallet{}, constants.IsDisabledMustTrueError
+	}
+
+	wallet.Status = "disabled"
+	wallet.EnabledAt = ""
+
+	helper.WriteJson(wallet, wallet.CustomerXid.String())
+
+	response := dto.ResponseDataDisable{
+		Id:         wallet.Id.String(),
+		OwnedBy:    wallet.CustomerXid.String(),
+		Status:     wallet.Status,
+		DisabledAt: helper.InitDate(),
+		Balance:    0,
+	}
+
+	return dto.ResponseWallet{Wallet: response}, nil
+}
+
+func (s *service) EnableWallet(wallet model.Wallet) (dto.ResponseWallet, error) {
 	if wallet.Status == "enabled" {
-		return dto.ResponseWalletEnabled{}, constants.AlreadyEnabledError
+		return dto.ResponseWallet{}, constants.AlreadyEnabledError
 	}
 
 	wallet.Status = "enabled"
@@ -55,7 +81,7 @@ func (s *service) EnableWallet(wallet model.Wallet) (dto.ResponseWalletEnabled, 
 		Balance:   0,
 	}
 
-	return dto.ResponseWalletEnabled{Wallet: response}, nil
+	return dto.ResponseWallet{Wallet: response}, nil
 }
 
 func (s *service) InitializeData(payload dto.InitializeWallet) (string, error) {
