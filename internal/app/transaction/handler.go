@@ -18,6 +18,22 @@ func NewHandler() *handler {
 	}
 }
 
+func (h *handler) TransactionWalletHandler(g *gin.Context) {
+	wallet, _ := g.Get("wallet")
+
+	response, err := h.service.TransactionWallet(wallet.(model.Wallet))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: err.Error()},
+		})
+		return
+	}
+
+	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: response})
+	return
+}
+
 func (h *handler) WithdrawalWalletHandler(g *gin.Context) {
 	var payload dto.WithdrawalWallet
 	if err := g.ShouldBind(&payload); err != nil {

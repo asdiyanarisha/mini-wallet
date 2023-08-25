@@ -15,10 +15,24 @@ type service struct {
 type Service interface {
 	DepositWallet(myWallet model.Wallet, request dto.DepositWallet) (dto.ResponseDeposit, error)
 	WithdrawalWallet(myWallet model.Wallet, request dto.WithdrawalWallet) (dto.ResponseWithdrawal, error)
+	TransactionWallet(myWallet model.Wallet) (dto.ResponseTransactionsInit, error)
 }
 
 func NewService() Service {
 	return &service{}
+}
+
+func (s *service) TransactionWallet(myWallet model.Wallet) (dto.ResponseTransactionsInit, error) {
+	if myWallet.Status != "enabled" {
+		return dto.ResponseTransactionsInit{}, constants.WalletDisabledError
+	}
+
+	transactions, err := helper.OpenTransactionFile(myWallet.CustomerXid.String())
+	if err != nil {
+		return dto.ResponseTransactionsInit{}, err
+	}
+
+	return dto.ResponseTransactionsInit{Transactions: transactions}, nil
 }
 
 func (s *service) WithdrawalWallet(myWallet model.Wallet, request dto.WithdrawalWallet) (dto.ResponseWithdrawal, error) {

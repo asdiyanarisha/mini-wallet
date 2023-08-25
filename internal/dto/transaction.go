@@ -1,6 +1,9 @@
 package dto
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"julo-test/internal/model"
+)
 
 type (
 	DepositWallet struct {
@@ -37,5 +40,9 @@ type (
 
 	ResponseWithdrawalInit struct {
 		Withdrawal ResponseWithdrawal `json:"withdrawal"`
+	}
+
+	ResponseTransactionsInit struct {
+		Transactions []model.Transaction `json:"transactions"`
 	}
 )
