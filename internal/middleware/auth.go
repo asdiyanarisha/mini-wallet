@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"julo-test/internal/dto"
 	"julo-test/internal/model"
@@ -25,6 +26,7 @@ func BearerToken() gin.HandlerFunc {
 
 		token := helper.GetTokenByBearer(bearerStr)
 		if token == (model.Token{}) {
+			fmt.Println("Check -1")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Common{
 				Status: "failed",
 				Data:   dto.Error{Error: "Unauthenticated"},
@@ -34,6 +36,8 @@ func BearerToken() gin.HandlerFunc {
 
 		wallet, err := helper.OpenWalletFile(token.CustomerXid)
 		if err != nil {
+			fmt.Println(err)
+			fmt.Println("Check")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Common{
 				Status: "failed",
 				Data:   dto.Error{Error: "Unauthenticated"},

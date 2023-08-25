@@ -48,7 +48,6 @@ func (s *service) DisableWallet(wallet model.Wallet, payload dto.DisableWallet) 
 	}
 
 	wallet.Status = "disabled"
-	wallet.EnabledAt = ""
 
 	helper.WriteJson(wallet, wallet.CustomerXid.String())
 
@@ -78,7 +77,7 @@ func (s *service) EnableWallet(wallet model.Wallet) (dto.ResponseWallet, error) 
 		OwnedBy:   wallet.CustomerXid.String(),
 		Status:    wallet.Status,
 		EnabledAt: wallet.EnabledAt,
-		Balance:   0,
+		Balance:   wallet.Balance,
 	}
 
 	return dto.ResponseWallet{Wallet: response}, nil

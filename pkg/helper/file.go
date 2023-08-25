@@ -69,7 +69,7 @@ func OpenTransactionFile(customerXid string) ([]model.Transaction, error) {
 func WriteJson(value any, customerXid string) {
 	file, _ := os.OpenFile(fmt.Sprintf("./data/wallet_%s.json", customerXid), os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	defer file.Close()
-
+	fmt.Println(value)
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(value); err != nil {
 		panic(err)
