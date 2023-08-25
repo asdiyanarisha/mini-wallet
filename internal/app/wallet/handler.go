@@ -30,7 +30,7 @@ func (h *handler) GetBalanceHandler(g *gin.Context) {
 		return
 	}
 
-	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: response})
+	g.JSON(http.StatusOK, dto.Common{Status: "success", Data: response})
 	return
 }
 

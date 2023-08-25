@@ -76,3 +76,14 @@ func WriteJson(value any, customerXid string) {
 		return
 	}
 }
+
+func WriteTransaction(value any, customerXid string) {
+	file, _ := os.OpenFile(fmt.Sprintf("./data/transaction_%s.json", customerXid), os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	if err := encoder.Encode(value); err != nil {
+		panic(err)
+		return
+	}
+}

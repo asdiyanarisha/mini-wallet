@@ -1,8 +1,23 @@
 package dto
 
+import "github.com/google/uuid"
+
 type (
 	DepositWallet struct {
 		Amount      string `form:"amount" binding:"required"`
 		ReferenceId string `form:"reference_id" binding:"required"`
+	}
+
+	ResponseDeposit struct {
+		Id          uuid.UUID `json:"id"`
+		DepositedBy uuid.UUID `json:"deposited_by"`
+		Status      string    `json:"status"`
+		DepositedAt string    `json:"deposited_at"`
+		Amount      int       `json:"amount"`
+		ReferenceId uuid.UUID `json:"reference_id"`
+	}
+
+	ResponseDepositInit struct {
+		Deposit ResponseDeposit `json:"deposit"`
 	}
 )

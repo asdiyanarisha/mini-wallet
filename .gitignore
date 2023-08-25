@@ -5,3 +5,4 @@ julo-test
 gen/
 ./storage/error/*
 ./data/*
+./data/wallet*

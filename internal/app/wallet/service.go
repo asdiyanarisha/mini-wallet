@@ -31,7 +31,7 @@ func (s *service) GetBalanceWallet(wallet model.Wallet) (dto.ResponseWalletEnabl
 		OwnedBy:   wallet.CustomerXid.String(),
 		Status:    wallet.Status,
 		EnabledAt: wallet.EnabledAt,
-		Balance:   0,
+		Balance:   wallet.Balance,
 	}
 
 	return dto.ResponseWalletEnabled{Wallet: response}, nil

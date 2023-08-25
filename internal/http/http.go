@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+	"julo-test/internal/app/transaction"
 	"julo-test/internal/app/wallet"
 	"julo-test/internal/middleware"
 )
@@ -17,5 +18,6 @@ func NewHttp(g *gin.Engine) {
 	walletGroup.Use(middleware.BearerToken())
 	{
 		wallet.NewHandler().WalletRouter(walletGroup)
+		transaction.NewHandler().TransactionRouter(walletGroup)
 	}
 }

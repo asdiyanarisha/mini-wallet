@@ -3,6 +3,7 @@ package transaction
 import (
 	"github.com/gin-gonic/gin"
 	"julo-test/internal/dto"
+	"julo-test/internal/model"
 	"julo-test/pkg/helper"
 	"net/http"
 )
@@ -26,5 +27,17 @@ func (h *handler) DepositWalletHandler(g *gin.Context) {
 		})
 		return
 	}
+	wallet, _ := g.Get("wallet")
 
+	response, err := h.service.DepositWallet(wallet.(model.Wallet), payload)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, dto.Common{
+			Status: "fail",
+			Data:   dto.Error{Error: err.Error()},
+		})
+		return
+	}
+
+	g.JSON(http.StatusCreated, dto.Common{Status: "success", Data: dto.ResponseDepositInit{Deposit: response}})
+	return
 }
