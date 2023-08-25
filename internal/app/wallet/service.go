@@ -2,10 +2,10 @@ package wallet
 
 import (
 	"github.com/google/uuid"
-	"julo-test/internal/dto"
-	"julo-test/internal/model"
-	"julo-test/pkg/constants"
-	"julo-test/pkg/helper"
+	"mini-wallet/internal/dto"
+	"mini-wallet/internal/model"
+	"mini-wallet/pkg/constants"
+	"mini-wallet/pkg/helper"
 )
 
 type service struct {

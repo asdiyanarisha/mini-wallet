@@ -1,4 +1,4 @@
-module julo-test
+module mini-wallet
 
 go 1.19
 

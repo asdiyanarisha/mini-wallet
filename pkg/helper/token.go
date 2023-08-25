@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"julo-test/internal/model"
+	"mini-wallet/internal/model"
 	"os"
 )
 

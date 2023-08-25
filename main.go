@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"julo-test/internal/http"
 	"log"
+	"mini-wallet/internal/http"
 )
 
 func main() {

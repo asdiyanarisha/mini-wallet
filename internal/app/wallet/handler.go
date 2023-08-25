@@ -2,9 +2,9 @@ package wallet
 
 import (
 	"github.com/gin-gonic/gin"
-	"julo-test/internal/dto"
-	"julo-test/internal/model"
-	"julo-test/pkg/helper"
+	"mini-wallet/internal/dto"
+	"mini-wallet/internal/model"
+	"mini-wallet/pkg/helper"
 	"net/http"
 )
 

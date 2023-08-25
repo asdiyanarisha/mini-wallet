@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/google/uuid"
-	"julo-test/internal/model"
+	"mini-wallet/internal/model"
 )
 
 type (

@@ -1,5 +1,5 @@
 .idea
-julo-test
+mini-wallet
 .env
 !.env.example
 gen/
